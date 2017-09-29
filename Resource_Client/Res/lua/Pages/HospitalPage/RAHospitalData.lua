@@ -1,0 +1,6 @@
+local RAHospitalData = 
+{
+	
+}
+
+return RAHospitalData
