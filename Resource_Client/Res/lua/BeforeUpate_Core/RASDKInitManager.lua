@@ -403,9 +403,9 @@ function RASDKInitManager:dealWithVersionUpdate(url)
 end
 
 function RASDKInitManager:Execute()
-    if isInUpdate then
-        RAUpdateManager:Execute()
-    end
+    -- if isInUpdate then
+    --     RAUpdateManager:Execute()
+    -- end
 
     --这里在RASDKInitManager.doneUpdate后，会isInLogin为true
     -- 然后被状态机调用
@@ -414,19 +414,19 @@ function RASDKInitManager:Execute()
         RAInitPrecedure.Execute()
     end
 
-    if startCheckSDK then
-        self:checkSDK(GamePrecedure:getInstance():getFrameTime())
-    end
+    -- if startCheckSDK then
+    --     self:checkSDK(GamePrecedure:getInstance():getFrameTime())
+    -- end
 
-    --区服列表获取失败后的处理，每5秒重新发送一次http请求
-    if serverListGetError then
-        local dt = GamePrecedure:getInstance():getFrameTime()
-        mFrameTime = mFrameTime + dt
-        if mFrameTime > 5 then
-            RASDKInitManager.getServerList(RASDKInitManager.httpListener)
-            mFrameTime = 0
-        end
-    end
+    --区服列表获取失败后的处理，每5秒重新发送一次http请求 todo delete
+    -- if serverListGetError then
+    --     local dt = GamePrecedure:getInstance():getFrameTime()
+    --     mFrameTime = mFrameTime + dt
+    --     if mFrameTime > 5 then
+    --         RASDKInitManager.getServerList(RASDKInitManager.httpListener)
+    --         mFrameTime = 0
+    --     end
+    -- end
 end
 
 --desc:判断当前sdk状态是否已经完成
@@ -614,6 +614,7 @@ function RASDKInitManager:doneUpdate()
 end
 
 
+-- 跳过sdk登录以及热更新 直接调这个方法 
 function RASDKInitManager:EnterInitPrecedure()
     RALogRelease("RASDKInitManager:EnterInitPrecedure")
     local RAGameLoadingState = RARequire("RAGameLoadingState")

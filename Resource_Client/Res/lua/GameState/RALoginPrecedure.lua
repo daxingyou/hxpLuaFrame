@@ -99,6 +99,8 @@ local OnReceiveMessage = function(message)
             local mainState = RARequire("RAGameMainState")
             local RAGameLoadingState = RARequire("RAGameLoadingState")
             RAGameLoadingState.changeState(RAGameLoadingStatus.LoginFinish)
+
+            -- 真正进入游戏主界面
             return GameStateMachine.ChangeState(mainState)
     end
 end
@@ -110,10 +112,12 @@ function RALoginPrecedure:Enter()
 
     self:addHandler();
     mLoginFailTime = 0
-    --链接服务器，如果成功则在回调中直接发送登陆请求
-    local RALoginManager = RARequire("RALoginManager")
-    RALoginManager:connectServer()
-    
+    --链接服务器，如果成功则在回调中直接发送登陆请求  todo delete  不向服务器请求
+    -- local RALoginManager = RARequire("RALoginManager")
+    -- RALoginManager:connectServer()
+
+    --不向服务器请求 直接进入游戏
+    self:enterGameDirect()
 end
 
 function RALoginPrecedure:Execute()
@@ -153,6 +157,15 @@ function RALoginPrecedure:addHandler()
     RALoginPrecedure.platformSDKListener = platformSDKListener:new(self)--注册SDK回调处理tabel
     RALoginPrecedure.packetManagerListener = ScriptPacketManagerListener:new(RALoginPrecedure.packetManagetHandler);--添加网络回调
     MessageManager.registerMessageHandler(MessageDef_LOGIN.MSG_LoginSuccess, OnReceiveMessage)
+end
+
+function RALoginPrecedure:enterGameDirect()
+    local mainState = RARequire("RAGameMainState")
+    local RAGameLoadingState = RARequire("RAGameLoadingState")
+    RAGameLoadingState.changeState(RAGameLoadingStatus.LoginFinish)
+
+    -- 真正进入游戏主界面
+    return GameStateMachine.ChangeState(mainState)
 end
 
 function RALoginPrecedure:removeHandler()

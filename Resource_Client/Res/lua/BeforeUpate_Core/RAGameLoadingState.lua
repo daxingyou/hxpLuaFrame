@@ -126,8 +126,9 @@ function RAGameLoadingState.Enter()
     else
         director:runWithScene(mScene)
     end
-    --init the sdk
-    RAGameLoadingState:registerHandler()
+    --init the sdk  todo delete
+    -- RAGameLoadingState:registerHandler()
+
     mFirstUpdate = true
 end
 
@@ -220,11 +221,14 @@ function RAGameLoadingState.Execute()
             local formatStr = "RAGameLoadingState.Execute startSDK TheEntrance of SDK" .." RedAlert CurentTime is %d-%d-%d-%d-%d-%d"
             local timeStr = string.format(formatStr, currTab.year, currTab.month, currTab.day, currTab.hour, currTab.min, currTab.sec)
             RALogRelease(timeStr)
+            -- -- todo delete
+            -- RAGameLoadingState.startSDK()
 
-            RAGameLoadingState.startSDK()
+            RASDKInitManager:EnterInitPrecedure()
         end
         mFirstUpdate = false
     end
+
     RASDKInitManager:Execute();
     
    RAGameLoadingState.setPercentByState()
